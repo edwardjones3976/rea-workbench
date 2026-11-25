@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; base-uri 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>REA Workbench</title>
+<link rel="stylesheet" href="style.css">
+<script type="module" src="../dist/ui.js"></script>
+</head>
+<body>
+<header>
+  <div><h1>REA Workbench</h1><p id="status" role="status">Connecting to Desk Code…</p></div>
+  <button id="cancel" disabled>Cancel operation</button>
+</header>
+<div class="layout">
+<aside>
+  <h2>Projects</h2>
+  <form id="newProject"><label for="projectName">Project name</label>
+    <input id="projectName" required maxlength="100" placeholder="Log diagnostics">
+    <button>Create project</button>
+  </form>
+  <label for="projects">Open project</label><select id="projects" aria-label="Open project"></select>
+  <button id="importBundle" data-action>Import project bundle</button>
+  <h2>Evidence</h2>
+  <button id="importFile" data-project>Import evidence</button>
+  <div id="evidence" class="evidence"></div>
+</aside>
+<main>
+  <div class="main-header"><h2 id="activeProject">Create or open a project</h2>
+  <label>Model connection <select id="connection" aria-label="Model connection"></select></label></div>
+  <section id="sampleGuide" hidden aria-labelledby="sampleTitle">
+    <h3 id="sampleTitle">Try the log diagnostics sample</h3>
+    <p>Create a separate project with example evidence, a local model fixture, and sample recipe input.</p>
+    <div class="actions"><button id="startSample" data-action disabled>Create sample project</button></div>
+    <ol>
+      <li>Draft from evidence, review the request, and approve the specification.</li>
+      <li>Generate TypeScript, accept the version, and run the specification tests.</li>
+      <li>Validate and save the recipe, run it, then export the tool and recipe.</li>
+    </ol>
+  </section>
+  <section>
+    <h3>Extraction Mode</h3>
+    <p>Review the rules, evidence references, and test cases before approving a specification.</p>
+    <div class="actions">
+      <button id="draftSpec" data-project>Draft from evidence</button>
+      <button id="saveSpec" data-project>Save edits</button>
+    </div>
+    <div class="rule-review" aria-labelledby="ruleReviewTitle">
+      <h4 id="ruleReviewTitle">Review rules and evidence</h4>
+      <p>This view follows the saved specification. Save any edits before approving.</p>
+      <div class="rule-columns">
+        <ol id="reviewRules" class="rule-list" aria-label="Specification rules"></ol>
+        <div id="ruleEvidence" class="rule-evidence" role="region" aria-label="Evidence for selected rule" aria-live="polite">Draft or save a specification to review its rules.</div>
+      </div>
+    </div>
+    <label for="spec">Behavior specification</label><textarea id="spec" spellcheck="false" rows="9"></textarea>
+    <button id="approveSpec" class="approve-spec" data-project>Approve specification</button>
+  </section>
+  <section>
+    <h3>Tool Creator</h3>
+    <div class="actions">
+      <button id="draftCode" data-project>Generate TypeScript</button>
+      <button id="acceptCode" data-project>Accept this version</button>
+      <button id="testCode" data-project>Run specification tests</button>
+    </div>
+    <label for="code">Generated source preview</label><textarea id="code" readonly spellcheck="false" rows="7"></textarea>
+  </section>
+  <section>
+    <h3>Recipe</h3>
+    <div class="actions">
+      <button id="saveRecipe" data-project>Validate and save</button>
+      <button id="testStep" data-project>Test through step</button>
+      <button id="runRecipe" data-project>Run recipe</button>
+      <button id="export" data-project>Export tool and recipe</button>
+    </div>
+    <div class="two"><label>Steps <textarea id="recipe" spellcheck="false" rows="7"></textarea></label>
+    <label>Recipe input <textarea id="recipeInput" spellcheck="false" rows="7"></textarea></label></div>
+    <div class="two">
+      <label>Step ID to test <input id="stepId" placeholder="diagnose"></label>
+      <form id="vendorForm"><label>Approved REA component <select id="vendorName"></select></label><button data-project>Add source component</button></form>
+    </div>
+  </section>
+  <section><h3>Result and receipt</h3><pre id="result" aria-live="polite">No runs yet.</pre></section>
+</main>
+</div>
+<dialog id="review">
+  <h2 id="reviewTitle">Review model request</h2><p>Confirm the evidence that will be sent to the selected model.</p>
+  <pre id="reviewPayload"></pre>
+  <form method="dialog" class="actions"><button value="cancel" autofocus>Cancel</button><button value="confirm">Send request</button></form>
+</dialog>
+</body></html>

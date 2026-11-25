@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/morluto/rea",
+  "release": "rea-agents-6.10.1",
+  "commit": "8bb01b514ac766c0c3ecc8f362bd38186eaec9c2",
+  "components": {
+    "rea-result": {
+      "LICENSE": "798f9e4d18e49b30bf2f12696c8ced73dc4e1413da375a333d01281543a1ea8b",
+      "src/domain/result.ts": "46d1417aa94e5093269858c11449369b278c8de44d7c4258b7443abae0c426a2"
+    }
+  }
+}

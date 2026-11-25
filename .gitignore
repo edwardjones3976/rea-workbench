@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.pilot/
+__pycache__/
+*.pyc
+*.wbpart

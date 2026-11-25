@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>REA Workbench Operator Manual</title>
+<style>
+:root{color-scheme:light dark;--paper:#f5f5ed;--panel:#fffdf7;--ink:#192b2c;--quiet:#435954;--accent:#0e675a;--line:#c8d6cd;--code:#eaf1e9}
+@media(prefers-color-scheme:dark){:root{--paper:#131e20;--panel:#1a2829;--ink:#e7f2ed;--quiet:#b1c5bb;--accent:#83d9c3;--line:#455c57;--code:#243636}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.62 system-ui,sans-serif}
+a{color:var(--accent);text-underline-offset:.2em}a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+.skip{position:absolute;transform:translateY(-150%);padding:.5rem 1rem;background:var(--panel)}.skip:focus{transform:none}
+header{background:#102f2b;color:#f1f8f3;padding:clamp(2.8rem,8vw,6rem) max(5vw,calc((100vw - 72rem)/2));border-bottom:.4rem solid #68bca3}
+header p{max-width:61ch;margin:1rem 0 0;color:#c9e7dc}
+h1,h2{font-family:Georgia,serif;line-height:1.08}h1{font-size:clamp(2.7rem,7vw,5.2rem);margin:0;letter-spacing:-.045em}h2{font-size:clamp(1.7rem,4vw,2.5rem);margin:0 0 1rem}
+h3{line-height:1.25;margin:1.6rem 0 .4rem}h3+p{margin-top:0}
+.layout{max-width:76rem;margin:auto;padding:2rem clamp(1rem,4vw,2rem);display:grid;grid-template-columns:14rem minmax(0,1fr);gap:clamp(1rem,5vw,4rem)}
+nav{align-self:start;position:sticky;top:1rem;padding:.75rem .85rem;border:1px solid var(--line);border-radius:.55rem;background:var(--panel)}
+nav ol{padding-left:1.45rem;margin:.45rem 0}nav li{margin:.35rem 0}
+section{padding:0 0 2rem;margin:0 0 2rem;border-bottom:1px solid var(--line);scroll-margin:1rem}
+p,li{max-width:75ch}li+li{margin-top:.35rem}
+aside,details{padding:.85rem 1rem;border-radius:.55rem;background:var(--panel);border:1px solid var(--line);margin:1rem 0}
+aside p{margin:.4rem 0}summary{font-weight:700;cursor:pointer}
+code,pre{font-family:ui-monospace,Consolas,monospace;font-size:.91em}code{overflow-wrap:anywhere;background:var(--code);border-radius:.2rem;padding:.06em .22em}
+pre{background:var(--code);padding:1rem;border-radius:.55rem;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}pre code{padding:0}
+.flow{display:flex;flex-wrap:wrap;gap:.5rem;list-style:none;padding:0}.flow li{margin:0;padding:.3rem .65rem;background:var(--code);border-radius:.35rem}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:.55rem;border-bottom:1px solid var(--line)}
+footer{color:var(--quiet);font-size:.9rem}
+@media(max-width:760px){.layout{grid-template-columns:1fr}nav{position:static}nav ol{columns:2}}
+@media print{header{background:white;color:black;padding:0;border:0}header p{color:black}.layout{display:block;padding:0}nav{position:static}section{break-inside:auto}h2,h3{break-after:avoid}details::details-content{content-visibility:visible!important}body{background:white;color:black}}
+</style>
+</head>
+<body>
+<a class="skip" href="#manual">Skip to the manual</a>
+<header><h1>REA Workbench<br>Operator Manual</h1><p>Turn saved evidence into a reviewed behavior specification, build a TypeScript tool from it, and run the tool in a reusable recipe.</p></header>
+<div class="layout">
+<nav aria-label="Contents"><strong>Contents</strong><ol>
+<li><a href="#start">Start the demo</a></li><li><a href="#evidence">Review evidence</a></li><li><a href="#tool">Build and test a tool</a></li><li><a href="#recipes">Run a recipe</a></li><li><a href="#share">Export and reopen</a></li><li><a href="#setup">Set up a checkout</a></li><li><a href="#models">Connect a model</a></li><li><a href="#trouble">Troubleshooting</a></li><li><a href="#developers">Developer checks</a></li>
+</ol></nav>
+<main id="manual">
+<section id="start"><h2>Start the demo</h2>
+<p>If Desk Code and Workbench are already configured on your PC, ask your Desk Code-enabled assistant to <strong>launch the REA Workbench demo through Desk Code</strong>. Give it the Workbench folder if you have more than one checkout. The launcher command runs through Desk Code’s permitted shell connector with the Workbench checkout as the working directory. Workbench opens as a separate Windows app.</p>
+<pre><code>python -B scripts\pilot.py demo --desk "C:\path\to\isolated-desk-code"</code></pre>
+<p>Select <strong>Create sample project</strong>. It imports the sample behavior notes and a Windows executable for REA inspection, selects the local deterministic model fixture, and fills the recipe input. You can repeat the demo using a fresh project. The fixture uses fixed answers and needs no provider key.</p>
+<ol class="flow" aria-label="Sample workflow"><li>Import</li><li>Draft</li><li>Review</li><li>Generate</li><li>Test</li><li>Run</li><li>Export</li></ol>
+<aside><p><strong>Pilot scope.</strong> Running the desktop app requires access to a compatible Desk Code checkout. The public Workbench source includes the pilot patch. The Desk Code base requires separate access. Build Workbench from source using the setup instructions.</p></aside>
+</section>
+<section id="evidence"><h2>Review evidence before approving</h2>
+<ol>
+<li>For your own work, create a project and use <strong>Import evidence</strong> for files in the supervisor’s approved import folder. The current pilot accepts UTF-8 notes, PE files, ZIP archives, and supported ASAR archives.</li>
+<li>Choose a model and select <strong>Draft from evidence</strong>. Read the request preview, then send it if the inputs and destination are appropriate.</li>
+<li>In <strong>Review rules and evidence</strong>, select a rule. Check its status, cited IDs, file name, digest, and saved text or REA inspection. The digest identifies the imported bytes. A rule with no references has an explicit empty state.</li>
+<li>Compare the rule to its evidence. Use <strong>Observed</strong> for behavior shown by the evidence, <strong>Inferred</strong> for interpretations, and <strong>Unknown</strong> when the evidence leaves a question open. Check the specification’s examples and expected outcomes too.</li>
+<li>Edit the specification if needed, select <strong>Save edits</strong>, then review the saved revision and select <strong>Approve specification</strong>.</li>
+</ol>
+<p>The evidence panel opens saved excerpts locally and redacts recognized credential patterns. A reopened bundle can retain an evidence reference whose source excerpt was omitted from the export.</p>
+</section>
+<section id="tool"><h2>Build and test a tool</h2>
+<ol><li>Select <strong>Generate TypeScript</strong> once the specification is approved. Review the model request and confirm it. The generation request uses the approved behavior specification and tests.</li><li>Read the generated source preview. Select <strong>Accept this version</strong> when it matches the behavior you reviewed.</li><li>Select <strong>Run specification tests</strong>. Read the result and receipt before putting the tool into a recipe.</li></ol>
+<p>The accepted tool can be exported as an editable TypeScript library, CLI, and test source. Generated execution uses a pinned Docker image with network access disabled and no host bind mounts.</p>
+</section>
+<section id="recipes"><h2>Compose and run a recipe</h2>
+<p>Use named inputs and outputs from earlier steps. The demo maps the imported artifact ID to a REA inspection, the log lines to the generated tool, and the diagnosis to a local MCP reference lookup.</p>
+<pre><code>[
+  {"id":"inspect","kind":"rea","from":"input.artifact"},
+  {"id":"diagnose","kind":"generated","from":"input.logs"},
+  {"id":"reference","kind":"mcp","from":"diagnose"}
+]</code></pre>
+<pre><code>{"artifact":"E2","logs":["WARN first","ERROR last","INFO final","malformed"]}</code></pre>
+<p>Select <strong>Validate and save</strong>. Use <strong>Test through step</strong> with an ID such as <code>diagnose</code>, or <strong>Run recipe</strong> for the complete sequence. The sample diagnosis should contain one INFO, one WARN, one ERROR, and one malformed entry. The result panel also shows the Desk Code receipt.</p>
+<p>Additional local plugins and MCP tools require trusted supervisor configuration. The launcher supplies a fixture plugin and MCP server. Adding the optional pinned <code>rea-result</code> component includes its original license and provenance in the export.</p>
+</section>
+<section id="share"><h2>Export and reopen</h2>
+<p>Choose <strong>Export tool and recipe</strong>. Open the directory reported in the result and look for <code>bundle.json</code>, the spec, recipe, TypeScript library, CLI, and tests.</p>
+<p>To reopen on another compatible installation, place <code>bundle.json</code> in its approved import folder. Use <strong>Import project bundle</strong>, review the available evidence, and reapprove the specification and source.</p>
+<aside><p>Before sharing, inspect the bundle and source for sensitive names, specification text, and evidence metadata. The bundle keeps evidence references and may retain REA inspection metadata. Original imported text and artifact bytes are omitted. For a recipe that needs a REA result, the bundle uses the inspection carried in its metadata where available.</p></aside>
+</section>
+<section id="setup"><h2>Set up a source checkout</h2>
+<p>Install Windows prerequisites and use Desk Code for the setup commands. You need Docker Desktop, Python, compatible Node 26, REA Agents 6.10.1, and access to the Desk Code base commit recorded below.</p>
+<ol><li>Prepare an isolated Desk Code checkout at <code>1bed52566498df491f7ff14c9a5789e7c07132e8</code>. From that checkout, apply Workbench’s <code>desk-code-pilot.patch</code> with <code>git apply</code> using the patch’s full path. Leave the live Desk Code checkout in place.</li><li>From the Workbench checkout, use the permitted Desk Code shell connector to run the commands below. Use the Node installer step if Electron’s runtime files are missing.</li></ol>
+<pre><code>npm ci --no-audit --no-fund
+node node_modules\electron\install.js
+npm run build
+docker pull node@sha256:0042e17d232a87a2cd485be1da7900fca4d10a4ad11b29e9285da1d2e54798c9
+python -B scripts\pilot.py self-test --desk "C:\path\to\isolated-desk-code"</code></pre>
+<p>Use the <a href="#start">demo command</a> after the self-test. For your own projects, use <code>launch</code> in place of <code>demo</code>. The two modes have separate project and import stores in <code>.pilot</code>.</p>
+</section>
+<section id="models"><h2>Connect a model for your own project</h2>
+<table><thead><tr><th scope="col">Connection</th><th scope="col">How it is configured</th></tr></thead><tbody>
+<tr><td>Local fixture</td><td>Use <code>demo</code>. The loopback fixture supplies fixed behavior and source.</td></tr>
+<tr><td>Local OpenAI-compatible</td><td>Use <code>launch --local-model NAME</code>. Override the approved loopback address with <code>--local-endpoint</code> if needed.</td></tr>
+<tr><td>OpenAI API</td><td>Use <code>launch --cloud-model NAME</code>. Supply <code>OPENAI_API_KEY</code> through the supervisor’s protected environment. Inspect the destination and data in the preview before sending.</td></tr>
+</tbody></table>
+</section>
+<section id="trouble"><h2>Troubleshooting</h2>
+<details open><summary>No Workbench window opens</summary><p>Confirm that the command ran through Desk Code with the Workbench checkout as its working directory and the isolated checkout passed as <code>--desk</code>. Look at the launch receipt for a missing prerequisite or refused action.</p></details>
+<details open><summary>The sample button is missing</summary><p>Use <code>demo</code> and wait for <strong>Desk Code connected</strong>. <code>launch</code> starts the normal project store.</p></details>
+<details open><summary>Evidence import was refused or a rule has no excerpt</summary><p>Check the supervisor’s approved import folder and file type. A portable bundle can omit the original excerpt. Consult the original project or reimport an authorized copy, then update and save the rule’s references.</p></details>
+<details open><summary>Tool generation or recipe execution fails</summary><p>Confirm the spec was approved, the generated version was accepted, and the recipe was saved. Check the pinned Docker image and the Desk Code receipt. Before retrying a disconnected cloud request, check whether the earlier request completed.</p></details>
+</section>
+<section id="developers"><h2>Developer and assistant checks</h2>
+<pre><code>python -B scripts\pilot.py smoke --desk "C:\path\to\isolated-desk-code"
+python -B scripts\pilot.py sample-smoke --desk "C:\path\to\isolated-desk-code"</code></pre>
+<p>The self-test exercises REA inspection, local MCP and plugin calls, generated execution, evidence lookup, and bundle round-trip. The smoke checks start hidden Electron windows. <code>sample-smoke</code> exercises the guided sample and evidence review through the renderer.</p>
+<p>Keep the Workbench checkout, the isolated Desk Code patch target, and test data separate. Report the command, backend, receipt, and whether UI interaction was automated or performed with the physical pointer.</p>
+</section>
+<footer>REA Workbench · Windows desktop pilot · <a href="#start">Back to the start</a></footer>
+</main>
+</div>
+</body>
+</html>
